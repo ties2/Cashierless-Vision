@@ -128,6 +128,9 @@ pip install lap==0.4.0 --no-build-isolation
 
 make dvc-pull       # pull the versioned dataset
 make train          # train detector, tracked in MLflow
+#if got error
+pip install -U ultralytics
+
 make evaluate       # offline metrics + promotion gate
 make export         # weights -> ONNX -> TensorRT, staged into the Triton repo
 make up             # docker compose: Triton + FastAPI gateway
