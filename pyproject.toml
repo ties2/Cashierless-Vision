@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cashierless_vision"
+version = "0.1.0"
+description = "Multi-camera computer-vision system for autonomous (cashierless) retail checkout, with a self-improving data engine."
+requires-python = ">=3.9"
+
+# Runtime deps live in requirements.txt (pinned, DVC/CI friendly).
+# Optional groups below are for local dev convenience.
+[project.optional-dependencies]
+train = ["ultralytics", "mlflow", "torch", "torchvision"]
+serve = ["fastapi", "uvicorn[standard]", "tritonclient[grpc]", "opencv-python-headless"]
+dev = ["pytest", "ruff", "pre-commit", "httpx"]
+
+# --- Tooling config (centralized, identical convention to the MLOps standard) ---
+[tool.ruff]
+line-length = 88
+target-version = "py39"
+
+[tool.ruff.lint]
+# E/F/W/I from the standard, plus B (bugbear) and UP (pyupgrade) for a vision codebase.
+select = ["E", "F", "I", "W", "B", "UP"]
+# Vision math frequently uses short names (x, y, w, h, iou); don't fight it.
+ignore = ["E741"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]

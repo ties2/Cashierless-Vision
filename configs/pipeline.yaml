@@ -1,0 +1,19 @@
+inference:
+  backend: triton            # "triton" (prod) | "local" (dev)
+  triton_url: "triton:8001"
+  detector_model: "detector_yolo"
+  imgsz: 640
+  conf_threshold: 0.25
+
+tracking:
+  high_thresh: 0.5
+  low_thresh: 0.1
+  match_thresh: 0.8
+  max_age: 30
+
+association:
+  max_bind_distance_m: 1.2
+  hand_product_iou: 0.1
+
+fusion:
+  identity_merge_m: 0.5

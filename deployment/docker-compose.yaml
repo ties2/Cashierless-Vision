@@ -1,0 +1,25 @@
+services:
+  triton:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.triton
+    runtime: nvidia          # requires nvidia-container-toolkit
+    shm_size: "2gb"
+    ports:
+      - "8001:8001"          # gRPC (gateway talks to this)
+      - "8002:8002"          # Prometheus metrics
+    volumes:
+      - ./triton_model_repository:/models
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+
+  gateway:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.serving
+    depends_on:
+      - triton
+    ports:
+      - "8000:8000"
+    environment:
+      - TRITON_URL=triton:8001

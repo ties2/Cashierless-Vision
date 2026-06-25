@@ -1,0 +1,12 @@
+# Triton Inference Server serving the TensorRT model repository.
+# Use the NGC Triton image matching your CUDA/TensorRT; pin the tag explicitly.
+FROM nvcr.io/nvidia/tritonserver:24.05-py3
+
+# The model repository is mounted at runtime (see docker-compose) so new model
+# versions exported by `make export` can be hot-reloaded without rebuilding.
+EXPOSE 8000 8001 8002
+
+# 8000 = HTTP, 8001 = gRPC (used by our client), 8002 = Prometheus metrics.
+CMD ["tritonserver", "--model-repository=/models", \
+     "--model-control-mode=poll", "--repository-poll-secs=30", \
+     "--allow-metrics=true"]

@@ -1,0 +1,6 @@
+[core]
+    remote = storage
+    autostage = true
+['remote "storage"']
+    url = s3://your-bucket/cashierless-vision/dvc
+    # Configure credentials via env (AWS_ACCESS_KEY_ID / ...) or `dvc remote modify`.

@@ -1,0 +1,43 @@
+name: ci-cd
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+      - name: Install (CPU-only, no GPU deps in CI)
+        run: |
+          pip install ruff pytest
+          # CPU torch wheel keeps CI fast; serving image uses CUDA torch.
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -e .[serve]
+      - name: Ruff (lint + format check)
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Unit tests
+        run: pytest -q
+
+  build:
+    name: Build & push images
+    needs: quality
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build gateway image
+        run: docker build -f deployment/Dockerfile.serving -t cashierless-gateway:${{ github.sha }} .
+      - name: Build Triton image
+        run: docker build -f deployment/Dockerfile.triton -t cashierless-triton:${{ github.sha }} .
+      # Push step intentionally omitted here — wire to your registry (ECR/GHCR)
+      # and add an environment-gated deploy job (shadow -> canary -> stable).

@@ -1,0 +1,16 @@
+# Generated/overwritten by `make export`. Committed here as the canonical example.
+name: "detector_yolo"
+platform: "tensorrt_plan"
+max_batch_size: 8
+input [
+  { name: "images", data_type: TYPE_FP16, dims: [ 3, 640, 640 ] }
+]
+output [
+  { name: "output0", data_type: TYPE_FP16, dims: [ -1, 6 ] }
+]
+# Coalesce frames from many cameras into one GPU call -> higher throughput.
+dynamic_batching {
+  preferred_batch_size: [ 4, 8 ]
+  max_queue_delay_microseconds: 2000
+}
+instance_group [ { count: 2, kind: KIND_GPU } ]

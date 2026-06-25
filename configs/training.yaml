@@ -1,0 +1,13 @@
+arch: yolo                   # yolo | rtdetr (challenger)
+base_weights: yolov10m.pt
+epochs: 100
+imgsz: 640
+dataset: data/processed/dataset.yaml
+mlflow:
+  tracking_uri: "sqlite:///mlflow.db"
+  experiment: "store_product_detection"
+
+data_engine:
+  mining_top_k: 2000
+  auto_accept_conf: 0.92
+  min_new_reviewed: 500

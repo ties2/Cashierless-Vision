@@ -1,0 +1,21 @@
+# Triton ensemble: a single inference call that chains detect -> reid on the
+# server side, so the gateway issues one request per frame batch.
+name: "ensemble_vision"
+platform: "ensemble"
+max_batch_size: 8
+input [
+  { name: "images", data_type: TYPE_FP16, dims: [ 3, 640, 640 ] }
+]
+output [
+  { name: "detections", data_type: TYPE_FP16, dims: [ -1, 6 ] }
+]
+ensemble_scheduling {
+  step [
+    {
+      model_name: "detector_yolo"
+      model_version: -1
+      input_map  { key: "images",  value: "images" }
+      output_map { key: "output0", value: "detections" }
+    }
+  ]
+}

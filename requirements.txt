@@ -1,0 +1,31 @@
+# ---- Core CV / DL ----
+torch>=2.6.0
+torchvision>=0.21.0          # Updated to match torch 2.6+
+ultralytics==8.2.58          # YOLOv8/v9/v10 + RT-DETR training & export
+opencv-python-headless==4.10.0.84
+numpy==1.26.4
+scipy==1.13.1                # Hungarian assignment (linear_sum_assignment)
+
+# ---- Tracking ----
+lapx                         # Modern drop-in replacement for ByteTrack
+filterpy==1.4.5              # Kalman filter for track motion model
+
+# ---- Inference / serving ----
+tritonclient[grpc]==2.47.0   # talk to Triton Inference Server
+onnx==1.16.1
+onnxruntime==1.18.1          # CPU fallback / validation of exported graphs
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+pydantic==2.8.2
+
+# ---- MLOps backbone (matches the standard reference) ----
+mlflow==2.14.1
+dvc[s3]==3.51.2
+
+# ---- Data engine / monitoring ----
+pyarrow==15.0.2              # Downgraded to satisfy mlflow 2.14.1
+scikit-learn==1.5.1          # drift stats, calibration, embedding clustering
+
+# ---- Config / utils ----
+pyyaml==6.0.1
+typer==0.12.3                # thin CLI used by some src/ entrypoints

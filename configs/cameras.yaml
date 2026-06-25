@@ -1,0 +1,14 @@
+# Per-camera calibration. Homography maps image pixels -> store floor metres.
+# Calibrate once per install by clicking >=4 known floor points per camera.
+store_id: foodstore-001
+cameras:
+  cam_aisle_1:
+    rtsp: "rtsp://10.0.0.11/stream1"
+    floor_bounds: [0.0, 0.0, 6.0, 4.0]   # xmin ymin xmax ymax (metres)
+    image_points:  [[120, 700], [1800, 700], [1750, 300], [200, 300]]
+    floor_points:  [[0.0, 0.0], [6.0, 0.0], [6.0, 4.0], [0.0, 4.0]]
+  cam_aisle_2:
+    rtsp: "rtsp://10.0.0.12/stream1"
+    floor_bounds: [6.0, 0.0, 12.0, 4.0]
+    image_points:  [[140, 690], [1810, 695], [1760, 310], [210, 305]]
+    floor_points:  [[6.0, 0.0], [12.0, 0.0], [12.0, 4.0], [6.0, 4.0]]
