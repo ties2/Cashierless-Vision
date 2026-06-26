@@ -14,6 +14,9 @@ dynamic per-script logger, MLflow-tracked training, a `Makefile` orchestrator,
 FastAPI serving, and a Docker/GitHub Actions CI/CD spine — and extends it for
 computer vision and the feedback loop.
 
+
+<img src="path/to/image.png" alt="Alt text" width="800"/>
+
 ---
 
 ## 1. The two halves
