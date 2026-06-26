@@ -15,7 +15,7 @@ FastAPI serving, and a Docker/GitHub Actions CI/CD spine — and extends it for
 computer vision and the feedback loop.
 
 
-<img src="path/to/image.png" alt="Alt text" width="800"/>
+<img src="https://github.com/ties2/Cashierless-Vision/blob/main/images/demo.png" alt="Alt text" width="500"/>
 
 ---
 
