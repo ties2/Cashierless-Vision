@@ -1,4 +1,5 @@
-# Cashierless Vision — Autonomous Retail Checkout
+# Cashierless Vision 
+## Autonomous Retail Checkout
 
 A multi-camera computer-vision system that watches a store from the ceiling,
 figures out **which products each shopper picks up**, and builds a virtual cart
@@ -147,22 +148,3 @@ make drift          # data/concept drift report
 
 ---
 
-## 5. Rollout safety
-
-New models never replace production directly. The path is **shadow → canary →
-stable**: a challenger runs alongside the incumbent (mining disagreements),
-then serves a small traffic slice behind the gateway's routing, and is only
-promoted after passing the gate in `src/models/evaluate.py` (must beat the
-incumbent on held-out mAP and not regress on the curated hard slices).
-
----
-
-## 6. What's stubbed vs. real
-
-The MLOps scaffolding, control flow, configs, contracts, and the flywheel
-orchestration are complete and runnable. Three things are intentionally left as
-clearly-marked integration points, because they depend on your physical install
-and labeled data: (1) the trained model weights, (2) the SKU classifier and
-teacher model inference inside `auto_labeler._teacher_label`, and (3) the
-short-TTL identity store (Redis) behind cross-camera fusion. Each is flagged in
-its module docstring.
