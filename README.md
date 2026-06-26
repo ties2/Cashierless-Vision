@@ -14,8 +14,9 @@ dynamic per-script logger, MLflow-tracked training, a `Makefile` orchestrator,
 FastAPI serving, and a Docker/GitHub Actions CI/CD spine — and extends it for
 computer vision and the feedback loop.
 
-
-<img src="https://github.com/ties2/Cashierless-Vision/blob/main/images/demo.png" alt="Alt text" width="500"/>
+<div align="center">
+  <img src="https://github.com/ties2/Cashierless-Vision/blob/main/images/demo.png" alt="Description of image" width="500"/>
+</div>
 
 ---
 
