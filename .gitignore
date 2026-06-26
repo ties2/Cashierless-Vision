@@ -12,7 +12,7 @@ dist/
 *.mp4
 *.avi
 *.jpg
-*.png
+
 !docs/**/*.png
 
 # Model weights / exported engines
