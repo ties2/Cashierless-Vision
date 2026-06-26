@@ -11,16 +11,18 @@ jobs:
     name: Lint & Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
-          python-version: "3.9"
-      - name: Install (CPU-only, no GPU deps in CI)
+          python-version: "3.11"
+      # Lint + unit tests are dependency-light by design: no torch/cv2/triton.
+      # Installing only what the tests import keeps CI fast and removes the
+      # heavy-wheel failure surface (GPU torch, tritonclient, etc.).
+      - name: Install lint + test deps
         run: |
-          pip install ruff pytest
-          # CPU torch wheel keeps CI fast; serving image uses CUDA torch.
-          pip install torch --index-url https://download.pytorch.org/whl/cpu
-          pip install -e .[serve]
+          python -m pip install --upgrade pip
+          pip install ruff pytest numpy scipy
+          pip install -e . --no-deps        # makes `import src...` resolve
       - name: Ruff (lint + format check)
         run: |
           ruff check .
@@ -29,15 +31,16 @@ jobs:
         run: pytest -q
 
   build:
-    name: Build & push images
+    name: Build gateway image
     needs: quality
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+      # Only the lightweight FastAPI gateway is built in CI. The Triton image
+      # (FROM nvcr.io/nvidia/tritonserver, ~15GB) is too large for a standard
+      # runner — build/push it from your deployment environment instead.
       - name: Build gateway image
         run: docker build -f deployment/Dockerfile.serving -t cashierless-gateway:${{ github.sha }} .
-      - name: Build Triton image
-        run: docker build -f deployment/Dockerfile.triton -t cashierless-triton:${{ github.sha }} .
-      # Push step intentionally omitted here — wire to your registry (ECR/GHCR)
-      # and add an environment-gated deploy job (shadow -> canary -> stable).
+      # Wire your registry login + push here (GHCR/ECR), then an
+      # environment-gated deploy job (shadow -> canary -> stable).
