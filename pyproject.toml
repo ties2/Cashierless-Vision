@@ -19,6 +19,9 @@ dev = ["pytest", "ruff", "pre-commit", "httpx"]
 [tool.ruff]
 line-length = 88
 target-version = "py39"
+# Notebooks are exploratory and follow notebook idioms (pip-install-then-import,
+# multiple imports per line). Don't hold them to the strict src/ rules.
+extend-exclude = ["notebooks", "*.ipynb"]
 
 [tool.ruff.lint]
 # E/F/W/I from the standard, plus B (bugbear) and UP (pyupgrade) for a vision codebase.
